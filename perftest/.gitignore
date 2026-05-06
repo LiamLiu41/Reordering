@@ -16,9 +16,8 @@
 .dirstamp
 .deps
 
-# Automake
-Makefile
-Makefile.in
+# Automake (generated Makefile is ignored; Makefile.in is kept in repo for ./configure without automake)
+/Makefile
 aclocal.m4
 autom4te.cache/
 config/
@@ -26,7 +25,8 @@ config.h
 config.h.in*
 config.log
 config.status
-configure*
+# Generated shell script only — do NOT use configure* (that ignores configure.ac).
+/configure
 libtool
 m4/
 stamp-h1
