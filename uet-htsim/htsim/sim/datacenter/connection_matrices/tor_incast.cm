@@ -1,0 +1,18 @@
+Nodes 256
+Connections 16
+16->0 id 1 start 0 size 80000000 type one_to_many
+32->1 id 2 start 0 size 80000000 type one_to_many
+48->2 id 3 start 0 size 80000000 type one_to_many
+64->3 id 4 start 0 size 80000000 type one_to_many
+80->4 id 5 start 0 size 80000000 type one_to_many
+96->5 id 6 start 0 size 80000000 type one_to_many
+112->6 id 7 start 0 size 80000000 type one_to_many
+128->7 id 8 start 0 size 80000000 type one_to_many
+144->8 id 9 start 0 size 80000000 type one_to_many
+160->9 id 10 start 0 size 80000000 type one_to_many
+176->10 id 11 start 0 size 80000000 type one_to_many
+192->11 id 12 start 0 size 80000000 type one_to_many
+208->12 id 13 start 0 size 80000000 type one_to_many
+224->13 id 14 start 0 size 80000000 type one_to_many
+240->14 id 15 start 0 size 80000000 type one_to_many
+241->15 id 16 start 0 size 80000000 type one_to_many
