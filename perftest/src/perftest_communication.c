@@ -905,7 +905,7 @@ int set_up_connection(struct pingpong_context *ctx,
 		my_dest[i].qpn   = ctx->qp[i]->qp_num;
 		/* Original Mellanox default (random PSN) — replaced by fixed PERFTEST_INIT_PSN:
 		   my_dest[i].psn = lrand48() & 0xffffff;
-		   Must match ctx_modify_qp_to_rts(..., PERFTEST_INIT_PSN) in perftest_resources.c */
+		   Must match ctx_modify_qp_to_rts(..., my_dest->psn) in perftest_resources.c */
 		my_dest[i].psn   = PERFTEST_INIT_PSN;
 		my_dest[i].rkey = user_param->use_null_mr ? ctx->null_mr->lkey : ctx->mr[i]->rkey;
 
@@ -2932,6 +2932,22 @@ int create_rdma_cm_connection(struct pingpong_context *ctx,
 		error_message = "Failed to sync between client and server "
 			"after creating RDMA CM connection.";
 		goto destroy_rdma_id;
+	}
+
+	if (user_param->output == FULL_VERBOSITY &&
+	    user_param->connection_type == RC && ctx->qp[0]) {
+		struct ibv_qp_attr qpa;
+		struct ibv_qp_init_attr qia;
+
+		memset(&qpa, 0, sizeof(qpa));
+		memset(&qia, 0, sizeof(qia));
+		if (!ibv_query_qp(ctx->qp[0], &qpa, IBV_QP_SQ_PSN, &qia)) {
+			fprintf(stdout,
+				"RDMA CM: data-path SQ PSN is %#06x (kernel/CM; not PERFTEST_INIT_PSN). "
+				"For wire PSN starting at %#06x, run without -R/--rdma_cm.\n",
+				(unsigned int)(qpa.sq_psn & 0xffffff),
+				(unsigned int)(PERFTEST_INIT_PSN & 0xffffff));
+		}
 	}
 
 	free(hints.ai_src_addr);

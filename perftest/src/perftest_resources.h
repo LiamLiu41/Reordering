@@ -75,10 +75,13 @@
 #include "perftest_parameters.h"
 
 /*
- * Initial 24-bit PSN programmed into each QP at handshake / RTS (unless UD/SRD).
- * Both peers exchange this value over the TCP/RDMA-CM side channel; local RTS uses
- * PERFTEST_INIT_PSN as SQ PSN so the first data-plane BTH PSN matches when the
- * RNIC honors ibv_modify_qp. Override at compile time only if you know what you do.
+ * Initial 24-bit PSN programmed into each QP at handshake / RTS (verbs path only).
+ * Both peers exchange this value over the socket side channel; ctx_modify_qp_to_rts
+ * sets sq_psn from my_dest->psn (defaults to this macro).
+ *
+ * If you run with --rdma_cm (-R), QPs reach RTS inside the kernel via librdmacm and
+ * the first-wire PSN is CM/stack negotiated — not PERFTEST_INIT_PSN. For captures
+ * that must start at PSN 0, use the default verbs connection (no -R).
  */
 #ifndef PERFTEST_INIT_PSN
 #define PERFTEST_INIT_PSN 0

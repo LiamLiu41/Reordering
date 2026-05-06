@@ -3203,8 +3203,8 @@ static int ctx_modify_qp_to_rts(struct ibv_qp *qp,
 	if (user_param->connection_type != RawEth) {
 
 		flags |= IBV_QP_SQ_PSN;
-		/* Align SQ PSN with handshake-advertised PSN (see ctx_set_send_wqce data path). */
-		attr->sq_psn = PERFTEST_INIT_PSN;
+		/* Must match my_dest->psn exchanged in ctx_set_send_wqce (24-bit). */
+		attr->sq_psn = (uint32_t)my_dest->psn & 0xffffff;
 
 		if (user_param->connection_type == DC ||
 			user_param->connection_type == RC ||
