@@ -3184,7 +3184,18 @@ static int ctx_modify_qp_to_rtr(struct ibv_qp *qp,
 
 	if (user_param->use_ooo)
 		flags |= ooo_flags;
-	return ibv_modify_qp(qp, attr, flags);
+	{
+		int ret = ibv_modify_qp(qp, attr, flags);
+
+		if (ret)
+			fprintf(stderr,
+				"ibv_modify_qp to RTR failed: %s (errno=%d), dest_qpn=%u rq_psn=%#x path_mtu=%d is_global=%u dlid=%#x\n",
+				strerror(errno), errno,
+				attr->dest_qp_num, attr->rq_psn,
+				attr->path_mtu, attr->ah_attr.is_global,
+				attr->ah_attr.dlid);
+		return ret;
+	}
 }
 
 /******************************************************************************
