@@ -74,16 +74,6 @@
 #include <fcntl.h>
 #include "perftest_parameters.h"
 
-/*
- * Initial 24-bit PSN programmed into each QP at handshake / RTS (unless UD/SRD).
- * Both peers exchange this value over the TCP/RDMA-CM side channel; local RTS uses
- * PERFTEST_INIT_PSN as SQ PSN so the first data-plane BTH PSN matches when the
- * RNIC honors ibv_modify_qp. Override at compile time only if you know what you do.
- */
-#ifndef PERFTEST_INIT_PSN
-#define PERFTEST_INIT_PSN 0
-#endif
-
 #define NUM_OF_RETRIES		(10)
 
 /* Outstanding reads for "read" verb only. */

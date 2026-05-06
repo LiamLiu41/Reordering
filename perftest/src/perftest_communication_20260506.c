@@ -903,10 +903,8 @@ int set_up_connection(struct pingpong_context *ctx,
 		}
 
 		my_dest[i].qpn   = ctx->qp[i]->qp_num;
-		/* Original Mellanox default (random PSN) — replaced by fixed PERFTEST_INIT_PSN:
-		   my_dest[i].psn = lrand48() & 0xffffff;
-		   Must match ctx_modify_qp_to_rts(..., PERFTEST_INIT_PSN) in perftest_resources.c */
-		my_dest[i].psn   = PERFTEST_INIT_PSN;
+		// my_dest[i].psn   = lrand48() & 0xffffff;
+		my_dest[i].psn = 0;
 		my_dest[i].rkey = user_param->use_null_mr ? ctx->null_mr->lkey : ctx->mr[i]->rkey;
 
 		/* Each qp gives his receive buffer address.*/
